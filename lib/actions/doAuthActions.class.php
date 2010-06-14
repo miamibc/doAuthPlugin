@@ -58,7 +58,7 @@ class doAuthActions extends sfActions {
     $this->preRegister($request);
 
     if ($request->isMethod('post')) {
-      $this->form->bind($request->getParameter('user'),$request->getParameter('user'));
+      $this->form->bind($request->getParameter('user') );
       if ($this->form->isValid()) {
         $this->form->save();
         $user = $this->form->getObject();
@@ -75,7 +75,7 @@ class doAuthActions extends sfActions {
           $user->save();
           $this->firstSignin();
         } else {
-          $this->getUser()->setFlash('notice','Please check your email to finish registration process');
+          $this->getUser()->setFlash('notice',$this->getContext()->getI18N()->__('Please check your email to finish registration process'));
         }
 
         if ($params = sfConfig::get('app_doAuth_register_forward')) {
@@ -123,14 +123,14 @@ class doAuthActions extends sfActions {
       $user = Doctrine::getTable('User')->find($request->getParameter('user'));
       $this->forward404Unless($user);
       if ($request->getParameter('code') != doAuthTools::passwordResetCode($user)) {
-        $this->getUser()->setFlash('error','Password reset code is invalid');
+        $this->getUser()->setFlash('error',$this->getContext()->getI18N()->__('Password reset code is invalid'));
         $this->forward404();
       }
       $password = doAuthTools::generatePassword();
       doAuthMailer::sendNewPassword($this,$user,$password);
       $user->setPassword($password);
       $user->save();
-      $this->getUser()->setFlash('notice','We have sent a new password on your email');
+      $this->getUser()->setFlash('notice',$this->getContext()->getI18N()->__('We have sent a new password on your email'));
       $this->redirect(sfConfig::get('app_doAuth_reset_password_url', '@signin'));
     }
 
@@ -141,7 +141,7 @@ class doAuthActions extends sfActions {
       if ($this->form->isValid()) {
         $user = Doctrine::getTable('User')->findOneByEmail($this->form->getValue('email') );
         doAuthMailer::sendPasswordRequest($this,$user);
-        $this->getUser()->setFlash('notice','You have requested a new password. Please, check your email and follow the instructions.');
+        $this->getUser()->setFlash('notice',$this->getContext()->getI18N()->__('You have requested a new password. Please, check your email and follow the instructions.'));
         $this->redirect(sfConfig::get('app_doAuth_reset_password_url', '@signin'));
       }
     }
@@ -156,9 +156,9 @@ class doAuthActions extends sfActions {
   {
     if (sfConfig::get('app_doAuth_register_signin',true)) {
       $this->getUser()->signIn($this->user);
-      $this->getUser()->setFlash('notice','Congratulations! You are now registered.');
+      $this->getUser()->setFlash('notice',$this->getContext()->getI18N()->__('Congratulations! You are now registered.'));
     } else {
-      $this->getUser()->setFlash('notice','Congratulations! You are now registered. Please, sign in');
+      $this->getUser()->setFlash('notice',$this->getContext()->getI18N()->__('Congratulations! You are now registered. Please, sign in'));
     }
   }
 
