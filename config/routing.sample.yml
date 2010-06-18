@@ -10,9 +10,13 @@ register:
   url: /register
   param: { module: user, action: register }
 
-password:
-  url: /reset_password
-  param: { module: user, action: resetPassword, wildcard: true }
+request_password:
+  url: /request_password
+  param: { module: user, action: requestPassword }
+
+reset_password:
+  url: /reset_password/:user/:code
+  param: { module: user, action: resetPassword }
 
 activation:
   url: /activate/:code

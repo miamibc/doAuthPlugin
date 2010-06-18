@@ -1,12 +1,7 @@
 <?php use_helper('I18N') ?>
 
-<h1><?php echo __('Password reset') ?></h1>
+<h1><?php echo __('Reset password') ?></h1>
 
-<form action="<?php echo url_for('@password') ?>" method="post">
-  <table>
-    <?php echo $form ?>
-  </table>
+<p><?php echo __('Password changed. We have sent a new password on your email.'); ?></p>
 
-  <input type="submit" value="<?php echo __('Password reset') ?>" />
-
-</form>
+<p><?php echo link_to( __('Sign in'), '@signin');?></p>
